@@ -34,7 +34,7 @@ export default function Home() {
     const { data, error } = await supabase.from('students').select('*').eq('nid', nid).single();
     
     if (error || !data) {
-      setErrorMsg('الطالب غير موجود. تأكد من إدخال الرقم القومي بشكل صحيح أو تواصل مع الدعم الدعم الفني.');
+      setErrorMsg('الطالب غير موجود. تأكد من إدخال الرقم القومي بشكل صحيح أو تواصل مع الدعم الفني.');
       setStudent(null);
     } else {
       setStudent(data);
@@ -43,12 +43,19 @@ export default function Home() {
   };
 
   const handleSendOtp = async () => {
-    if (!email.includes('@')) return alert('يرجى إدخال بريد إلكتروني صحيح');
+    // تنظيف الإيميل وفحصه لمنع المسافات والحروف الخاطئة
+    const cleanEmail = email.trim().toLowerCase();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    if (!emailRegex.test(cleanEmail)) {
+      return alert('يرجى إدخال بريد إلكتروني صحيح وتجنب ترك مسافات (مثال: student@gmail.com)');
+    }
+
     setLoading(true);
     
     const res = await fetch('/api/send-otp', {
       method: 'POST',
-      body: JSON.stringify({ nid: student.nid, email, name: student.name }),
+      body: JSON.stringify({ nid: student.nid, email: cleanEmail, name: student.name }),
       headers: { 'Content-Type': 'application/json' }
     });
     
@@ -60,15 +67,13 @@ export default function Home() {
     setLoading(false);
   };
 
-  // يرجى استبدال دالة handleVerifyOtp القديمة بهذه الدالة
   const handleVerifyOtp = async () => {
     setLoading(true);
-    
     try {
-      // إرسال البيانات إلى مسار التحقق في السيرفر
       const res = await fetch('/api/verify-otp', {
         method: 'POST',
-        body: JSON.stringify({ nid: student.nid, email: email, otp: otpInput }),
+        // نرسل الإيميل النظيف للكود
+        body: JSON.stringify({ nid: student.nid, email: email.trim().toLowerCase(), otp: otpInput }),
         headers: { 'Content-Type': 'application/json' }
       });
       
@@ -76,15 +81,13 @@ export default function Home() {
       
       if (result.success) {
         alert('تم تسجيل البريد الإلكتروني بنجاح!');
-        // تحديث حالة الطالب في الواجهة لإظهار رسالة النجاح الخضراء
-        setStudent({ ...student, email: email });
+        setStudent({ ...student, email: email.trim().toLowerCase() });
       } else {
         alert(result.message || 'الكود غير صحيح أو منتهي الصلاحية');
       }
     } catch (error) {
       alert('حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.');
     }
-    
     setLoading(false);
   };
 
@@ -194,12 +197,15 @@ export default function Home() {
                     يرجى فتح البريد الإلكتروني الخاص بك ({email}) وإدخال الكود المرسل (الكود صالح لمدة 10 دقائق).
                   </div>
                   <label className="block text-gray-800 font-bold mb-2 text-center">كود التفعيل (OTP)</label>
+                  {/* هنا التعديل الجديد لخانة الكود */}
                   <input 
                     type="text" 
                     maxLength={6}
                     value={otpInput}
                     onChange={(e) => setOtpInput(e.target.value.replace(/[^0-9]/g, ''))}
-                    className="w-full px-4 py-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none mb-4 text-center text-3xl tracking-[1em] font-bold"
+                    dir="ltr"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none mb-6 text-center text-2xl tracking-[0.5em] font-bold text-gray-800 transition-all bg-gray-50 focus:bg-white placeholder-gray-300"
+                    placeholder="------"
                   />
                   <button 
                     onClick={handleVerifyOtp}
@@ -221,11 +227,9 @@ export default function Home() {
         <div className="flex gap-4 mb-8">
           <a href="https://wa.me/201113515751" target="_blank" className="flex items-center gap-2 px-6 py-3 bg-[#1e293b] border border-[#334155] rounded-xl hover:bg-[#0f172a] transition duration-300">
             <span className="font-bold text-[#4ade80]">واتساب</span>
-            {/* يمكنك إضافة أيقونة واتساب SVG هنا */}
           </a>
           <a href="https://t.me/Dr_Abdallah_Sabry" target="_blank" className="flex items-center gap-2 px-6 py-3 bg-[#1e293b] border border-[#334155] rounded-xl hover:bg-[#0f172a] transition duration-300">
             <span className="font-bold text-[#60a5fa]">تليجرام</span>
-             {/* يمكنك إضافة أيقونة تليجرام SVG هنا */}
           </a>
         </div>
         <p className="text-gray-500 text-xs">
