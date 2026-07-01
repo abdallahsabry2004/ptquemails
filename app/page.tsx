@@ -97,7 +97,7 @@ export default function Home() {
       {/* الترويسة والتعليمات */}
       <div className="max-w-3xl w-full bg-white rounded-xl shadow-lg p-8 mb-8 border-t-4 border-blue-600">
         <h1 className="text-2xl font-bold text-center text-blue-800 mb-6">إضافة البريد الإلكتروني لنظام ابن الهيثم</h1>
-        <h2 className="text-lg font-semibold text-center text-gray-700 mb-4">كلية العلاج الطبيعي - جامعة جنوب الوادي</h2>
+        <h2 className="text-lg font-semibold text-center text-gray-700 mb-4">كلية العلاج الطبيعي - جامعة قنا</h2>
         
         <div className="bg-blue-50 border-r-4 border-blue-500 p-4 rounded text-sm text-gray-800 leading-relaxed font-medium">
           سيتم استخدام هذا البريد الالكتروني في نظام ابن الهيثم حتى يستطيع الطالب اعادة تعيين كلمة المرور الخاصة به من خلال هذا البريد الالكتروني المسجل ، وبالتالي يجب التأكد جيدا من صحة البريد المسجل ، وانه يعمل لدى الطالب الان ، والتأكد من عدم فقدانه فيما بعد ، حيث انه لايوجد اي طريقة اخرى لاسترجاع كلمة المرور، ويتحمل الطالب خطأ التسجيل غير الصحيح للبريد الالكتروني او فقدانه.
