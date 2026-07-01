@@ -60,23 +60,31 @@ export default function Home() {
     setLoading(false);
   };
 
+  // يرجى استبدال دالة handleVerifyOtp القديمة بهذه الدالة
   const handleVerifyOtp = async () => {
     setLoading(true);
-    // جلب بيانات الـ OTP من القاعدة
-    const { data } = await supabase.from('students').select('otp_data').eq('nid', student.nid).single();
     
-    if (data?.otp_data?.otp === otpInput && Date.now() < data.otp_data.expiresAt) {
-      // تحديث الإيميل ووقت التسجيل
-      await supabase.from('students').update({
-        email: email,
-        reg_time: new Date().toISOString()
-      }).eq('nid', student.nid);
+    try {
+      // إرسال البيانات إلى مسار التحقق في السيرفر
+      const res = await fetch('/api/verify-otp', {
+        method: 'POST',
+        body: JSON.stringify({ nid: student.nid, email: email, otp: otpInput }),
+        headers: { 'Content-Type': 'application/json' }
+      });
       
-      alert('تم تسجيل البريد الإلكتروني بنجاح!');
-      setStudent({ ...student, email: email });
-    } else {
-      alert('الكود غير صحيح أو منتهي الصلاحية');
+      const result = await res.json();
+      
+      if (result.success) {
+        alert('تم تسجيل البريد الإلكتروني بنجاح!');
+        // تحديث حالة الطالب في الواجهة لإظهار رسالة النجاح الخضراء
+        setStudent({ ...student, email: email });
+      } else {
+        alert(result.message || 'الكود غير صحيح أو منتهي الصلاحية');
+      }
+    } catch (error) {
+      alert('حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.');
     }
+    
     setLoading(false);
   };
 
