@@ -1,10 +1,11 @@
+// app/api/send-otp/route.ts
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from 'nodemailer';
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
-// مصفوفة الإيميلات باستخدام الـ Refresh Token
+// مصفوفة الإيميلات مرتبطة بمتغيرات البيئة في Vercel
 const emailAccounts = [
   { user: 'abdallahsabryali@gmail.com', refreshToken: process.env.REFRESH_TOKEN_1 },
   { user: 'ali6newac@gmail.com', refreshToken: process.env.REFRESH_TOKEN_2 },
@@ -17,11 +18,9 @@ export async function POST(request: Request) {
   try {
     const { nid, email, name } = await request.json();
     
-    // إنشاء كود OTP من 6 أرقام
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = Date.now() + 10 * 60 * 1000;
 
-    // تحديث قاعدة البيانات بالكود
     const { error: dbError } = await supabase
       .from('students')
       .update({ otp_data: { otp, expiresAt } })
@@ -29,11 +28,9 @@ export async function POST(request: Request) {
 
     if (dbError) throw new Error('خطأ في قاعدة البيانات');
 
-    // اختيار حساب إيميل للتبديل (هنا نختار بناءً على رقم عشوائي)
     const accountIndex = Math.floor(Math.random() * emailAccounts.length);
     const account = emailAccounts[accountIndex];
 
-    // إعداد Nodemailer للعمل بنظام OAuth2
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -41,7 +38,7 @@ export async function POST(request: Request) {
         user: account.user,
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        refreshToken: account.refreshToken,
+        refreshToken: account.refreshToken, // يتم استدعاؤه الآن بشكل صحيح
       }
     });
 
