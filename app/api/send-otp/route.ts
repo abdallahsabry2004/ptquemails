@@ -6,11 +6,11 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env
 
 // مصفوفة الإيميلات باستخدام الـ Refresh Token
 const emailAccounts = [
-  { user: 'abdallahsabryali@gmail.com', refreshToken: process.env.1//04ji7sJJUfadaCgYIARAAGAQSNwF-L9Ir1HjP9QwZN1MsLJS2f23y1t4KERwd1Iy_qxpE9NPhDjhnHNtgX2wZVsYfrHRTuVRsxR8 },
-  { user: 'ali6newac@gmail.com', refreshToken: process.env.1//04_yByspyLgIXCgYIARAAGAQSNwF-L9IrDJ8TIzogOWUvNbTKy60x83GRZg1jNw0c06NeLBD0o7AV9y9Ibk8IrCsZsoNRniUqyZ0 },
-  { user: 'ali08acc@gmail.com', refreshToken: process.env.1//04WdtNaEJxRBjCgYIARAAGAQSNwF-L9Irwxd54Q6vQi_sDyvjBjxx40VqP8TDD55inVzj10v-EGmAE7JUkh_T4zN8EdsNnvBWfTA },
-  { user: 'ali09acc@gmail.com', refreshToken: process.env.1//04URvlvnCG_OVCgYIARAAGAQSNwF-L9IrQeiP_us9jrajgpzxnKZ0-DdPvcB40JSoINwQAwqVML3HCXsLmTJo6qEZZY0MGMhP1RA },
-  { user: 'alisabry31024@gmail.com', refreshToken: process.env.1//04PuaouVq8g8oCgYIARAAGAQSNwF-L9Ir1k9_DPFLAvxXuPxPlZ_PLwGjqKE9krrpz0HV0etK5x-66ophi70HTqCFv8raedQkmpY },
+  { user: 'abdallahsabryali@gmail.com', refreshToken: process.env.REFRESH_TOKEN_1 },
+  { user: 'ali6newac@gmail.com', refreshToken: process.env.REFRESH_TOKEN_2 },
+  { user: 'ali08acc@gmail.com', refreshToken: process.env.REFRESH_TOKEN_3 },
+  { user: 'ali09acc@gmail.com', refreshToken: process.env.REFRESH_TOKEN_4 },
+  { user: 'alisabry31024@gmail.com', refreshToken: process.env.REFRESH_TOKEN_5 },
 ];
 
 export async function POST(request: Request) {
