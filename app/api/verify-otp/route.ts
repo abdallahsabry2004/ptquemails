@@ -1,7 +1,7 @@
+// app/api/verify-otp/route.ts
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-// نستخدم مفتاح السيرفر (SERVICE_ROLE_KEY) لضمان صلاحية التعديل في قاعدة البيانات
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -21,15 +21,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: 'لم يتم العثور على طلب تفعيل مسبق.' });
     }
 
-    const storedOtp = student.otp_data.otp;
-    const expiresAt = student.otp_data.expiresAt;
+    // 🌟 الحل الجذري هنا: تحويل النص القادم من القاعدة إلى بيانات مقروءة
+    let parsedOtpData = student.otp_data;
+    if (typeof parsedOtpData === 'string') {
+      try {
+        parsedOtpData = JSON.parse(parsedOtpData);
+      } catch (e) {
+        console.error("خطأ في قراءة بيانات الـ OTP", e);
+      }
+    }
+
+    // الآن يمكننا استخراج الكود بأمان
+    const storedOtp = parsedOtpData.otp;
+    const expiresAt = parsedOtpData.expiresAt;
 
     // 2. التحقق من انتهاء الصلاحية
     if (Date.now() > expiresAt) {
       return NextResponse.json({ success: false, message: 'الكود منتهي الصلاحية، يرجى إرسال كود جديد.' });
     }
 
-    // 3. التحقق من تطابق الكود (نحول الطرفين لنص لضمان التطابق التام)
+    // 3. التحقق من تطابق الكود 
     if (String(storedOtp).trim() !== String(otp).trim()) {
       return NextResponse.json({ success: false, message: 'الكود غير صحيح، يرجى التأكد من الأرقام.' });
     }
@@ -38,14 +49,14 @@ export async function POST(request: Request) {
     const { error: updateError } = await supabase
       .from('students')
       .update({
-        email: email,
+        email: email.trim(),
         otp_data: null, // تفريغ الكود حتى لا يستخدم مرة أخرى
         reg_time: new Date().toISOString()
       })
       .eq('nid', String(nid).trim());
 
     if (updateError) {
-      throw new Error('حدث خطأ أثناء حفظ البيانات');
+      throw new Error('حدث خطأ أثناء حفظ البيانات في القاعدة');
     }
 
     return NextResponse.json({ success: true, message: 'تم تفعيل البريد الإلكتروني بنجاح.' });
