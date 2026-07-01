@@ -360,7 +360,7 @@ export default function AdminDashboard() {
         {/* الترويسة التي تظهر فقط عند الطباعة */}
         <div className="hidden print:block text-center p-6 border-b-2 border-gray-800 mb-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">جامعة جنوب الوادي - كلية العلاج الطبيعي</h2>
+            <h2 className="text-xl font-bold">جامعة قنا - كلية العلاج الطبيعي</h2>
             <p className="text-sm font-bold text-gray-600 border border-gray-400 p-2 rounded">
               برمجة وتطوير: د. عبدالله صبري
             </p>
@@ -378,9 +378,9 @@ export default function AdminDashboard() {
               <tr className="bg-gray-100 text-gray-700 border-b print:bg-gray-200">
                 <th className="p-4 font-bold border print:border-gray-800">#</th>
                 <th className="p-4 font-bold border print:border-gray-800">اسم الطالب</th>
-                <th className="p-4 font-bold border print:border-gray-800">كود الطالب</th>
-                <th className="p-4 font-bold border print:border-gray-800">الرقم القومي</th>
-                <th className="p-4 font-bold border print:border-gray-800">البريد الإلكتروني</th>
+                <th className="p-4 font-bold border print:border-gray-800 no-print">كود الطالب</th>
+<th className="p-4 font-bold border print:border-gray-800 no-print">الرقم القومي</th>
+<th className="p-4 font-bold border print:border-gray-800 no-print">البريد الإلكتروني</th>
                 <th className="p-4 font-bold text-center border print:border-gray-800">عام الالتحاق</th>
                 <th className="p-4 font-bold text-center border print:border-gray-800 no-print">حالة التسجيل</th>
               </tr>
@@ -399,9 +399,9 @@ export default function AdminDashboard() {
                   <tr key={student.nid} className="border-b hover:bg-gray-50 transition print:break-inside-avoid">
                     <td className="p-4 text-gray-500 border print:border-gray-400">{index + 1}</td>
                     <td className="p-4 font-bold text-gray-800 border print:border-gray-400">{student.name}</td>
-                    <td className="p-4 text-gray-600 border print:border-gray-400">{student.code}</td>
-                    <td className="p-4 text-gray-600 border print:border-gray-400">{student.nid}</td>
-                    <td className="p-4 text-blue-600 dir-ltr text-left font-medium border print:border-gray-400">{student.email || '-'}</td>
+                    <td className="p-4 text-gray-600 border print:border-gray-400 no-print">{student.code}</td>
+<td className="p-4 text-gray-600 border print:border-gray-400 no-print">{student.nid}</td>
+<td className="p-4 text-blue-600 dir-ltr text-left font-medium border print:border-gray-400 no-print">{student.email || '-'}</td>
                     <td className="p-4 text-center text-gray-600 border print:border-gray-400">{student.year}</td>
                     <td className="p-4 text-center no-print">
                       {student.email ? (
