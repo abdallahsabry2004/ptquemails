@@ -233,7 +233,7 @@ export default function Home() {
           </a>
         </div>
         <p className="text-gray-500 text-xs">
-          Attendance System. All rights reserved 2026 ©.
+          PTQU emails System. All rights reserved 2026 ©.
         </p>
       </footer>
     </div>
