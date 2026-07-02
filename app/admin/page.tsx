@@ -382,7 +382,7 @@ export default function AdminDashboard() {
 <th className="p-4 font-bold border print:border-gray-800 no-print">الرقم القومي</th>
 <th className="p-4 font-bold border print:border-gray-800 no-print">البريد الإلكتروني</th>
                 <th className="p-4 font-bold text-center border print:border-gray-800">عام الالتحاق</th>
-                <th className="p-4 font-bold text-center border print:border-gray-800 no-print">حالة التسجيل</th>
+                <th className="p-4 font-bold text-center border print:border-gray-800">حالة التسجيل</th>
               </tr>
             </thead>
             <tbody>
@@ -403,13 +403,13 @@ export default function AdminDashboard() {
 <td className="p-4 text-gray-600 border print:border-gray-400 no-print">{student.nid}</td>
 <td className="p-4 text-blue-600 dir-ltr text-left font-medium border print:border-gray-400 no-print">{student.email || '-'}</td>
                     <td className="p-4 text-center text-gray-600 border print:border-gray-400">{student.year}</td>
-                    <td className="p-4 text-center no-print">
-                      {student.email ? (
-                        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">مسجل</span>
-                      ) : (
-                        <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">غير مسجل</span>
-                      )}
-                    </td>
+                    <td className="p-4 text-center border print:border-gray-400">
+  {student.email ? (
+    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">مسجل</span>
+  ) : (
+    <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">غير مسجل</span>
+  )}
+</td>
                   </tr>
                 ))
               )}
