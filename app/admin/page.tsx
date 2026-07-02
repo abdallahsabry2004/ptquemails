@@ -362,7 +362,7 @@ export default function AdminDashboard() {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">جامعة قنا - كلية العلاج الطبيعي</h2>
             <p className="text-sm font-bold text-gray-600 border border-gray-400 p-2 rounded">
-              (مستخرج البيان: مسؤول النظام (عبدالله صبري
+             مستخرج البيان: مسؤول النظام عبدالله صبري
             </p>
           </div>
           <h1 className="text-2xl font-bold mt-4 underline">
